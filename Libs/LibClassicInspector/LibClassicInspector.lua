@@ -2742,6 +2742,13 @@ local tracked_achievements = lib.tracked_achievements
 local glyphs_table = lib.glyphs_table
 local glyph_r_tbl = lib.glyph_r_tbl
 
+local function transformItemLinkToItemID(itemLink)
+    if not itemLink then
+        return
+    end
+    return tonumber(string.match(itemLink, "item:(%d+)")), 0
+end
+
 local function getPlayerGUID(arg)
     if (arg) then
         if (GUIDIsPlayer(arg)) then
@@ -2839,7 +2846,7 @@ local function cacheUserInventory(unit)
     end
     local inventory = {["time"] = time(), ["inspect"] = true}
     for i=1,19 do
-        inventory[i] = GetInventoryItemID(unit, i)
+        inventory[i] = transformItemLinkToItemID(GetInventoryItemLink(unit, i))
         --C_Item.RequestLoadItemDataByID(itemID)
     end
     local user = getCacheUser(guid)
@@ -3620,8 +3627,7 @@ function lib:GetInventoryItemID(unitorguid, slot)
     local n = tonumber(slot) or 0
     assert(n > 0 and n < 20, "inventorySlot is not a valid number (1-19)")
     if (guid == UnitGUID("player")) then
-        local itemID = GetInventoryItemID("player", n)
-        return itemID
+        return transformItemLinkToItemID(GetInventoryItemLink("player", n))
     else
         local user = getCacheUser2(guid)
         if (user and user.inventory.time ~= 0) then
@@ -3711,7 +3717,7 @@ function lib:GetInventoryItemIDTable(unitorguid)
     if (guid == UnitGUID("player")) then
         local inventory = {}
         for i=1,19 do
-            inventory[i] = GetInventoryItemID("player", i)
+            inventory[i] = transformItemLinkToItemID(GetInventoryItemLink("player", i))
         end
         return inventory
     else
