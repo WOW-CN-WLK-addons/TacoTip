@@ -3102,7 +3102,7 @@ local function sendInfo()
         if (isWotlk) then
             for x = 1, 2 do
                 for i = 1, 6 do
-                    local z = select(3, GetGlyphSocketInfo(i, x))
+                    local z = select(4, GetGlyphSocketInfo(i, x))
                     if (z) then
                         if (z == 55115) then z = 54929 end
                         s = s..string.char(glyph_r_tbl[z]+48)
