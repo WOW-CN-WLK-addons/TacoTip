@@ -123,7 +123,8 @@ frame.name = addOnName
 if InterfaceOptions_AddCategory then
     InterfaceOptions_AddCategory(frame)
 else
-    local category, layout = _G.Settings.RegisterCanvasLayoutCategory(frame, frame.name)
+    local category = _G.Settings.RegisterCanvasLayoutCategory(frame, frame.name)
+    category.ID = frame.name
     _G.Settings.RegisterAddOnCategory(category)
 end
 frame:Hide()
@@ -792,11 +793,6 @@ frame:SetScript("OnShow", function(frame)
 end)
 
 SLASH_TACOTIP1 = "/tacotip";
-SLASH_TACOTIP2 = "/tooltip";
-SLASH_TACOTIP3 = "/tip";
-SLASH_TACOTIP4 = "/tt";
-SLASH_TACOTIP5 = "/gs";
-SLASH_TACOTIP6 = "/gearscore";
 SlashCmdList["TACOTIP"] = function(msg)
     local cmd = strlower(msg)
     if (cmd == "custom") then
@@ -840,7 +836,6 @@ SlashCmdList["TACOTIP"] = function(msg)
             print("|cff59f0dcTacoTip:|r "..L["TEXT_HELP_ANCHOR"])
         end
     else
-        InterfaceOptionsFrame_OpenToCategory(addOnName)
-        InterfaceOptionsFrame_OpenToCategory(addOnName)
+        _G.Settings.OpenToCategory(addOnName)
     end
 end
